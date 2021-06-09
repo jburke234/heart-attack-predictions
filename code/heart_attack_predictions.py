@@ -31,12 +31,9 @@ import pandas as pd
 import numpy as np 
 
 from sklearn.model_selection import KFold
+from sklearn.preprocessing import MinMaxScaler
 
-#import accuracy.py as acc
-#import linear_regression.py as lr
-#import KNN.py as knn
-#import naive_bayes.py as naive
-#import k_means_cluster.py as k_means
+import KNN as knn
 
 def open_dataset():
     # Get the current working directory
@@ -54,52 +51,50 @@ def open_dataset():
     # Read the CSV into a DataFrame
     df= pd.read_csv('heart.csv', sep=",", decimal='.' )
     
+    os.chdir(current_dir)
+    
     return df
 
 def generate_folds(k):
     kfold = KFold(k, True, 1)
     return kfold
-    
-    
+       
     
 def main():
     df = open_dataset()
     
-    # Need to do Feature selection Univariate, Recursive Feature Elimination, Bivariate
-    data = []
+    # Need to find correlation between features and output
     
-    #data = iloc[]
+    # Features 
+    X = df.iloc[:, [0, 12]]
     
-    # Linear Regression = 0, K-Nearest Neighbour = 1, Naive Bayes = 2, K Means Clustering = 3
-    model_control_array = [0,1,2,3]
-     
-    # Loop through the models 
-    for model_control in model_control_array:
-        
-        means = []
-        minimums = []
-        maxes = []
-        
-        # Loop through a range of k values to evaluate the number of folds accuracy for each model. 
-        for k in range(2,21):
-            kfold = generate_folds(k)
-            for train, test in kfold.split(data):
-                
-                if model_control == 0:
-                    #lr.predict(train, test)
-                    print('train: %s, test: %s' % (df[train], df[test]))
-                    pass
-                elif model_control == 1:
-                    #knn.predict_classification(train, test, num_neighbors)
-                    pass
-                elif model_control == 2:
-                    #naive.predict(train, test)
-                    pass
-                elif model_control == 3:
-                    #k_means.predict(train, test)
-                    pass
-                else:
-                    print(f"Model selection error - Model Control = {model_control}")
+    # Target Variable
+    Y = df.iloc[:, 13]
+    
+    
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    X = scaler.fit_transform(X)
+    
+    num_neighbors = 5
+    
+    calc_method = 0
+    
+    # Loop through a range of k values to evaluate the number of folds accuracy for each model.
+    for k in range(2,5):
+        kfold = generate_folds(k)
+        for train, test in kfold.split(X):
+            print(f"Folds = {k}")
+            print(train)
+            print(test)
+            knn.predict_classification(train, test, num_neighbors, calc_method)
+            
+            
+            
+            
+            # Resulting output should be:
+            #             num_neighbors    
+            # num_folds |      1      |   
+            #    2      | Acc_Score   |
 
 
 
