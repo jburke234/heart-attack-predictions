@@ -9,15 +9,15 @@ Created on Thu Jun  3 10:33:11 2021
     In KNN when a new data point is submitted the closest existing datapoints in the training set are located 
     These data points are then used to make a prediction for the new data point.
     
-    To achieve this we can  calculate the distances between each of the data points in the 
+    To achieve this we can calculate the distances between each of the data points in the 
     training set. It is also used to find the nearest neighbour to the new data point. 
     
     The prediction for the new data point is made using the average result of the nearest neighbours.
             
 """
 # Imports
-import system as sys
-import distance_calc.py as calc
+#import system as sys
+import distance_calc as calc
 
 
 ################################################################################################
@@ -31,13 +31,19 @@ def find_neighbors(train, test_row, num_neighbors, calc_method):
     for train_row in train:
         if(calc_method == 0):
              dist = calc.calc_euclidean_distance(test_row, train_row)
-        elif():
+             
+        elif(calc_method == 1):
             dist = calc.calc_hamming_distance()
-        elif():
+            
+        elif(calc_method == 2):
             dist = calc.calc_manhattan_distance()
+            
+        elif(calc_method == 3):
+            dist = calc.calc_mahalanobis_distance()
+            
         else:
             print("No distance calculation selected - EXITING")
-            sys.exit()
+            #sys.exit()
         distances.append((train_row, dist))
         
     # To find the nearest neighbours to the new data point we sort the calculated distance, to find 
@@ -49,8 +55,8 @@ def find_neighbors(train, test_row, num_neighbors, calc_method):
     return neighbors
 
 # Make a classification prediction with neighbors
-def predict_classification(train, test_row, num_neighbors):
-	neighbors = find_neighbors(train, test_row, num_neighbors)
+def predict_classification(train, test_row, num_neighbors, calc_method):
+	neighbors = find_neighbors(train, test_row, num_neighbors, calc_method)
 	output_values = [row[-1] for row in neighbors]
 	prediction = max(set(output_values), key=output_values.count)
 	return prediction
