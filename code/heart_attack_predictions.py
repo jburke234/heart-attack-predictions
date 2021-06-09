@@ -20,7 +20,7 @@ Created on Thu Jun  3 12:33:21 2021
     slp         - The slope of the peak exercise ST segment (1 = upsloping; 2 = flat; 3 = downsloping)   
     caa         - Number of major vessels (0-3) colored by flourosopy  
     thall       - Thal rate (normal = 3; fixed defect = 6; reversable defect = 7)  
-    output      - The target variable
+    output      - The target variable (Label)
 
 """
 # Util imports 
@@ -68,8 +68,8 @@ def main():
     # Features 
     X = df.iloc[:, [0, 12]]
     
-    # Target Variable
-    Y = df.iloc[:, 13]
+    # Label
+    y = df.iloc[:, 13]
     
     
     scaler = MinMaxScaler(feature_range=(0, 1))
@@ -80,21 +80,19 @@ def main():
     calc_method = 0
     
     # Loop through a range of k values to evaluate the number of folds accuracy for each model.
-    for k in range(2,5):
+    for k in range(2,21):
         kfold = generate_folds(k)
         for train, test in kfold.split(X):
-            print(f"Folds = {k}")
-            print(train)
-            print(test)
-            knn.predict_classification(train, test, num_neighbors, calc_method)
+            y_pred = knn.predict_classification(train, test, num_neighbors, calc_method)
+            
+    
+    #train, test =             
             
             
-            
-            
-            # Resulting output should be:
-            #             num_neighbors    
-            # num_folds |      1      |   
-            #    2      | Acc_Score   |
+    # Resulting output for each distance calculation  should be:
+    #             num_neighbors    
+    # num_folds |      1      |   
+    #    2      | Acc_Score   |
 
 
 

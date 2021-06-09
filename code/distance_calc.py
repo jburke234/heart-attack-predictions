@@ -13,10 +13,11 @@ from math import sqrt
 
 # Calculate the distance between two points using Euclidean geometry
 def calc_euclidean_distance(a, b):
-	distance = 0.0
-	for i in range(len(a)-1):
-		distance += (a[i] - b[i])**2
-	return sqrt(distance)
+    distance = 0.0
+    for i in range(len(a)-1):
+        distance += (a[i] - b[i])**2
+        pass
+    return sqrt(distance)
 
 #####################################################################################################
 ################################                Hamming                   ###########################
