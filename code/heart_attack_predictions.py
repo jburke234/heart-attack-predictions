@@ -89,7 +89,7 @@ def main():
         # Loop through a range of k values to evaluate the number of folds accuracy for each model.
         for k in range(2,21):
             
-            #print(f"Folds : {k}")
+            print(f"Folds : {k}")
             
             kfold = generate_folds(k)
             
@@ -115,7 +115,10 @@ def main():
                 elif(calc_method == 3):
                     maha_scores.append([k,num_neighbors, score])
     
-           
+    print(euclid_scores)
+    print(hamming_scores)
+    print(manhattan_scores)
+    print(maha_scores)
     # Resulting output for each distance calculation should be:
     #             num_neighbors    
     # num_folds |      2      |      3      |    ...     |     20      |
