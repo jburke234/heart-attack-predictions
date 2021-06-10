@@ -4,6 +4,8 @@ Created on Thu Jun  3 12:33:21 2021
 
 @author: jburke
 
+@paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4978658/
+
 @data_source: https://www.kaggle.com/rashikrahmanpritom/heart-attack-analysis-prediction-dataset
 
 @data_description:
