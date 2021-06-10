@@ -71,12 +71,12 @@ def predict_classification(train, test_row, num_neighbors, calc_method, X, y):
     
     neighbors = find_neighbors(train, test_row, num_neighbors, calc_method, X, y)
     
-    #output_values = [row[-1] for row in neighbors]
+    output_values = [row for row in neighbors]
     
-    #prediction = max(set(output_values), key=output_values.count)
+    prediction = max(set(output_values), key=output_values.count)
     
-    #return prediction
+    return prediction
     
-    return 0
+    #return 0
 
 
