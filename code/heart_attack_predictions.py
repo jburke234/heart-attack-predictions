@@ -116,11 +116,11 @@ def main():
            
     # Resulting output for each distance calculation should be:
     #             num_neighbors    
-    # num_folds |      2      |      3      |
-    #    2      | Acc_Score   |             |
-    #    3      | Acc_Score   |             |
-
-
+    # num_folds |      2      |      3      |    ...     |     20      |
+    #    2      |  Acc_Score  |             |    ...     |  Acc_Score  |
+    #    3      |  Acc_Score  |             |    ...     |  Acc_Score  |
+    #   ...     |  Acc_Score  |             |    ...     |  Acc_Score  |
+    #   20      |  Acc_Score  |             |    ...     |  Acc_Score  |
 
 if __name__ == '__main__':
     main()
