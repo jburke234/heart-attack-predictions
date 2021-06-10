@@ -58,7 +58,6 @@ def find_neighbors(train, test_row, num_neighbors, calc_method, X, y):
     # the nearest existing data points    
     distances.sort(key=lambda tup: tup[1])
     
-    
     neighbors = list()
     
     # Append the ids of the k neighbors to the neighbors list.  
