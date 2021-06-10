@@ -4,6 +4,8 @@ Created on Thu Jun  3 12:33:21 2021
 
 @author: jburke
 
+@paper: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4978658/
+
 @data_source: https://www.kaggle.com/rashikrahmanpritom/heart-attack-analysis-prediction-dataset
 
 @data_description:
@@ -61,9 +63,9 @@ def generate_folds(k):
        
     
 def main():
-    df = open_dataset()
     
-    # Need to find correlation between features and output
+    # Open the dataset from the data folder
+    df = open_dataset()
     
     # Features 
     X = df.iloc[:, [0, 12]]
@@ -71,30 +73,59 @@ def main():
     # Label
     y = df.iloc[:, 13]
     
-    
+    # Scale feature data to fit in a range 
     scaler = MinMaxScaler(feature_range=(0, 1))
     X = scaler.fit_transform(X)
     
-    num_neighbors = 5
+    # List to hold the [number of folds, number of neighbors, accuracy score]    
+    euclid_scores = list()
+    hamming_scores = list()
+    manhattan_scores = list()
+    maha_scores = list()
     
-    calc_method = 0
+    # Controls the type of distance calculation done 
+    for calc_method in range(0,1):
+        
+        # Loop through a range of k values to evaluate the number of folds accuracy for each model.
+        for k in range(2,21):
+            
+            print(f"Folds : {k}")
+            
+            kfold = generate_folds(k)
+            
+            # Loop through a range of neighbor number values 
+            for num_neighbors in range(2,21):
+                score = 0
+                
+                # Loop through each of the folds in the data 
+                for train, test in kfold.split(X):
+                    
+                    # Loop through each of the test rows
+                    for test_row in test:
+                        
+                        y_pred = knn.predict_classification(train, test_row, num_neighbors, calc_method, X, y)     
+                        
+                # Append the number of folds, number of neighbors and the resulting accuracy score to the desired scores list 
+                if(calc_method == 0):
+                    euclid_scores.append([k,num_neighbors, score])
+                elif(calc_method == 1):
+                    hamming_scores.append([k,num_neighbors, score])
+                elif(calc_method == 2):
+                    manhattan_scores.append([k,num_neighbors, score])
+                elif(calc_method == 3):
+                    maha_scores.append([k,num_neighbors, score])
     
-    # Loop through a range of k values to evaluate the number of folds accuracy for each model.
-    for k in range(2,21):
-        kfold = generate_folds(k)
-        for train, test in kfold.split(X):
-            y_pred = knn.predict_classification(train, test, num_neighbors, calc_method)
-            
-    
-    #train, test =             
-            
-            
-    # Resulting output for each distance calculation  should be:
+    print(euclid_scores)
+    print(hamming_scores)
+    print(manhattan_scores)
+    print(maha_scores)
+    # Resulting output for each distance calculation should be:
     #             num_neighbors    
-    # num_folds |      1      |   
-    #    2      | Acc_Score   |
-
-
+    # num_folds |      2      |      3      |    ...     |     20      |
+    #    2      |  Acc_Score  |             |    ...     |  Acc_Score  |
+    #    3      |  Acc_Score  |             |    ...     |  Acc_Score  |
+    #   ...     |  Acc_Score  |             |    ...     |  Acc_Score  |
+    #   20      |  Acc_Score  |             |    ...     |  Acc_Score  |
 
 if __name__ == '__main__':
     main()

@@ -23,6 +23,7 @@ def calc_euclidean_distance(a, b):
 ################################                Hamming                   ###########################
 #####################################################################################################
 
+# Calculate the Hamming distance between two arguements 
 def calc_hamming_distance(a,b):
     x = a ^ b
     setBits = 0
@@ -48,14 +49,15 @@ def manhattan_distancesum (arr, n):
     return res   
 
 def calc_manhattan_distance(a, b):
-    n = len(a)
-    return manhattan_distancesum(a, n) + manhattan_distancesum(b, n)
+    #n = len(a)
+    #return manhattan_distancesum(a, n) + manhattan_distancesum(b, n)
+    return 0
 
 #####################################################################################################
 ################################                Mahalanobis                 #########################
 #####################################################################################################
 
 def calc_mahalanobis_distance():
-    pass
+    return 0
 
 
