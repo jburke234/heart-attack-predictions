@@ -33,7 +33,7 @@ def find_neighbors(train, test_row, num_neighbors, calc_method, X, y):
     for train_row in train:
         
         # Init dist value
-        dist = -1
+        dist = 10000
         
         # Execute the desired distance calculation
         if(calc_method == 0):
