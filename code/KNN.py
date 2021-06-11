@@ -40,8 +40,8 @@ def find_neighbors(train, test_row, num_neighbors, calc_method, X, y):
              dist = calc.calc_euclidean_distance(X[train_row], X[test_row])
             
         elif(calc_method == 1):
-            dist = calc.calc_hamming_distance(X[train_row], X[test_row])
-            
+            #dist = calc.calc_hamming_distance(X[train_row], X[test_row])
+            pass
         elif(calc_method == 2):
             dist = calc.calc_manhattan_distance(X[train_row], X[test_row])
             
@@ -69,12 +69,15 @@ def find_neighbors(train, test_row, num_neighbors, calc_method, X, y):
 # Make a classification prediction with neighbors
 def predict_classification(train, test_row, num_neighbors, calc_method, X, y):
     
-    neighbors = find_neighbors(train, test_row, num_neighbors, calc_method, X, y)
+    neighbors = find_neighbors(train, test_row, num_neighbors, calc_method, X, y) 
     
-    output_values = [row for row in neighbors]
+    output_values = []
+    
+    for value in neighbors:
+        output_values.append(y[value])
     
     prediction = max(set(output_values), key=output_values.count)
-    
+
     return prediction
     
     #return 0

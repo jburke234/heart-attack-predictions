@@ -60,6 +60,14 @@ def open_dataset():
 def generate_folds(k):
     kfold = KFold(k, True, 1)
     return kfold
+
+# Calculate accuracy percentage
+def accuracy_metric(actual, predicted):
+	correct = 0
+	for i in range(len(actual)):
+		if actual[i] == predicted[i]:
+			correct += 1
+	return correct / float(len(actual)) * 100.0
        
     
 def main():
@@ -84,27 +92,48 @@ def main():
     maha_scores = list()
     
     # Controls the type of distance calculation done 
-    for calc_method in range(0,1):
+    for calc_method in range(0,3):
         
         # Loop through a range of k values to evaluate the number of folds accuracy for each model.
-        for k in range(2,21):
+        for k in range(2,11):
             
             print(f"Folds : {k}")
             
             kfold = generate_folds(k)
             
             # Loop through a range of neighbor number values 
-            for num_neighbors in range(2,21):
+            for num_neighbors in range(2,11):
+                scores = []
                 score = 0
                 
                 # Loop through each of the folds in the data 
                 for train, test in kfold.split(X):
                     
+                    test_count = 0
+                    correct = 0
+                    
                     # Loop through each of the test rows
                     for test_row in test:
                         
+                        # Returns the prediction for the test row as a 1 or a 0 
                         y_pred = knn.predict_classification(train, test_row, num_neighbors, calc_method, X, y)     
                         
+                        #print(f"Row ID: {test_row}, Expected: {y[test_row]}, Got: {y_pred}")
+                        
+                        if(y_pred == y[test_row]):
+                            correct += 1
+                        
+                        test_count += 1
+                    
+                    accuracy = (correct / test_count) * 100
+                    
+                    scores.append(accuracy)
+                        
+                        #scores.append(accuracy_metric(y[test_row], y_pred))
+                
+                score = np.round(np.mean(scores), 2)    
+                #print(scores)        
+                
                 # Append the number of folds, number of neighbors and the resulting accuracy score to the desired scores list 
                 if(calc_method == 0):
                     euclid_scores.append([k,num_neighbors, score])
@@ -115,10 +144,18 @@ def main():
                 elif(calc_method == 3):
                     maha_scores.append([k,num_neighbors, score])
     
+    print("Euclidean: ")
     print(euclid_scores)
+    
+    print("Hamming: ")
     print(hamming_scores)
+    
+    print("Manhattan: ")
     print(manhattan_scores)
+    
+    print("Maha: ")
     print(maha_scores)
+    
     # Resulting output for each distance calculation should be:
     #             num_neighbors    
     # num_folds |      2      |      3      |    ...     |     20      |
