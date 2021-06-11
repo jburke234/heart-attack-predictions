@@ -36,6 +36,7 @@ from sklearn.model_selection import KFold
 from sklearn.preprocessing import MinMaxScaler
 
 import KNN as knn
+import plot as plot
 
 def open_dataset():
     # Get the current working directory
@@ -86,24 +87,25 @@ def main():
     X = scaler.fit_transform(X)
     
     # List to hold the [number of folds, number of neighbors, accuracy score]    
-    euclid_scores = list()
-    hamming_scores = list()
-    manhattan_scores = list()
-    maha_scores = list()
+    overall_scores = list()
     
     # Controls the type of distance calculation done 
-    for calc_method in range(0,3):
+    for calc_method in range(0,1):
         
         # Loop through a range of k values to evaluate the number of folds accuracy for each model.
         for k in range(2,11):
-            
-            print(f"Folds : {k}")
             
             kfold = generate_folds(k)
             
             # Loop through a range of neighbor number values 
             for num_neighbors in range(2,11):
+                
+                print(f"Folds : {k}, Neighbors: {num_neighbors}")
+                
+                # Holds the accuracy score for each fold 
                 scores = []
+                
+                # Used to calculate the average accuracy score across the folds 
                 score = 0
                 
                 # Loop through each of the folds in the data 
@@ -136,25 +138,27 @@ def main():
                 
                 # Append the number of folds, number of neighbors and the resulting accuracy score to the desired scores list 
                 if(calc_method == 0):
-                    euclid_scores.append([k,num_neighbors, score])
+                    overall_scores.append(["Euclid", k, num_neighbors, score])
                 elif(calc_method == 1):
-                    hamming_scores.append([k,num_neighbors, score])
+                    overall_scores.append(["Hamming", k, num_neighbors, score])
                 elif(calc_method == 2):
-                    manhattan_scores.append([k,num_neighbors, score])
+                    overall_scores.append(["Manhattan", k, num_neighbors, score])
                 elif(calc_method == 3):
-                    maha_scores.append([k,num_neighbors, score])
+                    overall_scores.append(["Mahalanobis", k, num_neighbors, score])
+                elif(calc_method == 4):
+                    overall_scores.append(["Chi-Squared", k, num_neighbors, score])
+                elif(calc_method == 5):
+                    overall_scores.append(["Cosine", k, num_neighbors, score])
+                elif(calc_method == 6):
+                    overall_scores.append(["Minkowsky", k, num_neighbors, score])
     
-    print("Euclidean: ")
-    print(euclid_scores)
     
-    print("Hamming: ")
-    print(hamming_scores)
+    # Convert the overall data into a Dataframe for visualisation 
+    scores_df = pd.DataFrame(overall_scores[0:],columns=["dist_calc_type", "num_folds", "num_neighbors", "acc_score"])
+    print(scores_df)
     
-    print("Manhattan: ")
-    print(manhattan_scores)
+    #plot.multiplot(scores_df, "num_folds", "acc_score")
     
-    print("Maha: ")
-    print(maha_scores)
     
     # Resulting output for each distance calculation should be:
     #             num_neighbors    

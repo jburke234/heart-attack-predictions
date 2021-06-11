@@ -48,6 +48,15 @@ def find_neighbors(train, test_row, num_neighbors, calc_method, X, y):
         elif(calc_method == 3):
             dist = calc.calc_mahalanobis_distance(X[train_row], X[test_row])
             
+        # elif(calc_method == 4):
+        #     dist = calc.calc_chi_squared_distance(X[train_row], X[test_row])    
+            
+        # elif(calc_method == 5):
+        #     dist = calc.calc_cosine_distance(X[train_row], X[test_row])
+            
+        # elif(calc_method == 6):
+        #     dist = calc.calc_minkowsky_distance(X[train_row], X[test_row])
+            
         else:
             print("No distance calculation selected")
             
