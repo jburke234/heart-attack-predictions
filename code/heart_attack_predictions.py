@@ -58,6 +58,9 @@ def open_dataset():
     
     return df
 
+def write_to_file(df):
+    df.to_csv(r'C:\Users\yea-b\Desktop\Projects\Acc_Scores.csv', index = False)
+
 def generate_folds(k):
     kfold = KFold(k, True, 1)
     return kfold
@@ -90,7 +93,7 @@ def main():
     overall_scores = list()
     
     # Controls the type of distance calculation done 
-    for calc_method in range(0,1):
+    for calc_method in range(0,4):
         
         # Loop through a range of k values to evaluate the number of folds accuracy for each model.
         for k in range(2,11):
@@ -156,6 +159,8 @@ def main():
     # Convert the overall data into a Dataframe for visualisation 
     scores_df = pd.DataFrame(overall_scores[0:],columns=["dist_calc_type", "num_folds", "num_neighbors", "acc_score"])
     print(scores_df)
+    
+    write_to_file(scores_df)
     
     #plot.multiplot(scores_df, "num_folds", "acc_score")
     
