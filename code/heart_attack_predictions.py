@@ -59,20 +59,26 @@ def open_dataset():
     return df
 
 def write_to_file(df):
-    df.to_csv(r'C:\Users\yea-b\Desktop\Projects\Acc_Scores.csv', index = False)
+    # Get the current working directory
+    current_dir = os.getcwd() 
+    
+    # Go up one directory from working directory
+    os.chdir("..") 
+    
+    # Get the path for the data folder 
+    output_path = os.path.join(current_dir, '..\\output')  
+    
+    # Change working directory to the data folder
+    os.chdir(output_path) 
+    
+    df.to_csv('Acc_Scores.csv', index = False)
+    
+    os.chdir(current_dir)
 
 def generate_folds(k):
     kfold = KFold(k, True, 1)
     return kfold
-
-# Calculate accuracy percentage
-def accuracy_metric(actual, predicted):
-	correct = 0
-	for i in range(len(actual)):
-		if actual[i] == predicted[i]:
-			correct += 1
-	return correct / float(len(actual)) * 100.0
-       
+      
     
 def main():
     
@@ -93,15 +99,15 @@ def main():
     overall_scores = list()
     
     # Controls the type of distance calculation done 
-    for calc_method in range(0,4):
+    for calc_method in range(0,2):
         
         # Loop through a range of k values to evaluate the number of folds accuracy for each model.
-        for k in range(2,11):
+        for k in range(2,31):
             
             kfold = generate_folds(k)
             
             # Loop through a range of neighbor number values 
-            for num_neighbors in range(2,11):
+            for num_neighbors in range(2,31):
                 
                 print(f"Folds : {k}, Neighbors: {num_neighbors}")
                 
@@ -143,17 +149,17 @@ def main():
                 if(calc_method == 0):
                     overall_scores.append(["Euclid", k, num_neighbors, score])
                 elif(calc_method == 1):
-                    overall_scores.append(["Hamming", k, num_neighbors, score])
-                elif(calc_method == 2):
                     overall_scores.append(["Manhattan", k, num_neighbors, score])
-                elif(calc_method == 3):
-                    overall_scores.append(["Mahalanobis", k, num_neighbors, score])
-                elif(calc_method == 4):
-                    overall_scores.append(["Chi-Squared", k, num_neighbors, score])
-                elif(calc_method == 5):
-                    overall_scores.append(["Cosine", k, num_neighbors, score])
-                elif(calc_method == 6):
-                    overall_scores.append(["Minkowsky", k, num_neighbors, score])
+                # elif(calc_method == 2):
+                #      overall_scores.append(["Hamming", k, num_neighbors, score])
+                # elif(calc_method == 3):
+                #     overall_scores.append(["Mahalanobis", k, num_neighbors, score])
+                # elif(calc_method == 4):
+                #     overall_scores.append(["Chi-Squared", k, num_neighbors, score])
+                # elif(calc_method == 5):
+                #     overall_scores.append(["Cosine", k, num_neighbors, score])
+                # elif(calc_method == 6):
+                #     overall_scores.append(["Minkowski", k, num_neighbors, score])
     
     
     # Convert the overall data into a Dataframe for visualisation 
@@ -164,14 +170,6 @@ def main():
     
     #plot.multiplot(scores_df, "num_folds", "acc_score")
     
-    
-    # Resulting output for each distance calculation should be:
-    #             num_neighbors    
-    # num_folds |      2      |      3      |    ...     |     20      |
-    #    2      |  Acc_Score  |             |    ...     |  Acc_Score  |
-    #    3      |  Acc_Score  |             |    ...     |  Acc_Score  |
-    #   ...     |  Acc_Score  |             |    ...     |  Acc_Score  |
-    #   20      |  Acc_Score  |             |    ...     |  Acc_Score  |
 
 if __name__ == '__main__':
     main()

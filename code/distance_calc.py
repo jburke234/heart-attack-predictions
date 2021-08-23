@@ -98,7 +98,7 @@ def calc_cosine_distance():
 ################################                Minkowsky                   #########################
 #####################################################################################################
 
-def calc_minkowsky_distance():
+def calc_minkowski_distance():
     pass
 
 
